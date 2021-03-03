@@ -1,5 +1,6 @@
 #include "printd.c"
 
+//Initializing structure header with following values:
 header format ={
     .size = 3,
     .tag[0] = "INF",
@@ -10,7 +11,8 @@ header format ={
     .text[2] = "ERROR: "
 };
 
+//main function
 int main(int argc, char** argv){
-    printd(&format, 1, "To je test za 23608");
+    printd(&format, 1, "To je test za 23608");   //Calling function void printd(header* format, int i, char* niz) from printd.c
     return 0;
 }
