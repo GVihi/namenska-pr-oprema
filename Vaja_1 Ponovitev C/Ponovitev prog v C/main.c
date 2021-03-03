@@ -16,3 +16,5 @@ int main(int argc, char** argv){
     printd(&format, 1, "To je test za 23608");   //Calling function void printd(header* format, int i, char* niz) from printd.c
     return 0;
 }
+
+//GitHub Repository: https://github.com/GVihi/namenska-pr-oprema/tree/main/Vaja_1%20Ponovitev%20C/Ponovitev%20prog%20v%20C
