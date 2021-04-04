@@ -117,6 +117,8 @@ int main(int argc, char** argv){
             int fileOffset = 0;
             struct imenik temp;
 
+            if(strcmp(im.ime, "") != 0 && strcmp(im.priimek, "") != 0){
+
             while(1){
                 int offset = lseek(fd, fileOffset, SEEK_CUR);
                 fileOffset = 1;
@@ -129,6 +131,41 @@ int main(int argc, char** argv){
                 if(strcmp(im.ime, temp.ime) == 0 && strcmp(im.priimek, temp.priimek) == 0){
                     printf("%s \t %s \t %s \t %s \t %s \n", temp.id, temp.ime, temp.priimek, temp.telefon, temp.datum_rojstva);
                 }
+            }
+            }
+
+            if(strcmp(im.ime, "") == 0){
+
+            while(1){
+                int offset = lseek(fd, fileOffset, SEEK_CUR);
+                fileOffset = 1;
+                if(offset == nOfEntries){
+                    close(fd);
+                    break;
+                }
+                read(fd, &temp, sizeof(struct imenik));
+                
+                if(strcmp(im.priimek, temp.priimek) == 0){
+                    printf("%s \t %s \t %s \t %s \t %s \n", temp.id, temp.ime, temp.priimek, temp.telefon, temp.datum_rojstva);
+                }
+            }
+            }
+
+            if(strcmp(im.priimek, "") == 0){
+
+            while(1){
+                int offset = lseek(fd, fileOffset, SEEK_CUR);
+                fileOffset = 1;
+                if(offset == nOfEntries){
+                    close(fd);
+                    break;
+                }
+                read(fd, &temp, sizeof(struct imenik));
+                
+                if(strcmp(im.ime, temp.ime) == 0){
+                    printf("%s \t %s \t %s \t %s \t %s \n", temp.id, temp.ime, temp.priimek, temp.telefon, temp.datum_rojstva);
+                }
+            }
             }
         }
         
