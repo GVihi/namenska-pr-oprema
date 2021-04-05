@@ -22,7 +22,7 @@ int main(int argc, char** argv){
     char dan[5], mesec[5], leto[5];
 
     if(strcmp(argv[1], "-c") == 0){
-        int fd = open("xpo.dat", O_CREAT, 0660);
+        open("xpo.dat", O_CREAT, 0660);
         return 0;
     }
 
@@ -32,8 +32,9 @@ int main(int argc, char** argv){
     char id[20] = "";
 
     if(strcmp(argv[1], "-o") == 0){
-        int oprimek = (int) argv[2];
-        int fd = open("xpo.dat", O_RDWR, 0);
+        //int oprimek = (int) argv[2];
+        int oprimek = atoi(argv[2]);
+        //int fd = open("xpo.dat", O_RDWR, 0);
         strcat(im.id, "1");
 
         /*
@@ -92,13 +93,13 @@ int main(int argc, char** argv){
             printf("%s", "Writing to file \n");
             snprintf(im.datum_rojstva, 20, "%s.%s.%s", dan, mesec, leto);
 
-            lseek(fd, 0, SEEK_END);
-            write(fd, &im, sizeof(struct imenik));
-            write(fd, "!", sizeof(char));
+            lseek(oprimek, 0, SEEK_END);
+            write(oprimek, &im, sizeof(struct imenik));
+            write(oprimek, "!", sizeof(char));
         }
 
         struct stat fileProps;
-        fstat(fd, &fileProps);
+        fstat(oprimek, &fileProps);
         int nOfEntries = fileProps.st_size;
 
         if(podanId && !samoId){
@@ -120,13 +121,13 @@ int main(int argc, char** argv){
             if(strcmp(im.ime, "") != 0 && strcmp(im.priimek, "") != 0){
 
             while(1){
-                int offset = lseek(fd, fileOffset, SEEK_CUR);
+                int offset = lseek(oprimek, fileOffset, SEEK_CUR);
                 fileOffset = 1;
                 if(offset == nOfEntries){
-                    close(fd);
+                    close(oprimek);
                     break;
                 }
-                read(fd, &temp, sizeof(struct imenik));
+                read(oprimek, &temp, sizeof(struct imenik));
                 
                 if(strcmp(im.ime, temp.ime) == 0 && strcmp(im.priimek, temp.priimek) == 0){
                     printf("%s \t %s \t %s \t %s \t %s \n", temp.id, temp.ime, temp.priimek, temp.telefon, temp.datum_rojstva);
@@ -137,13 +138,13 @@ int main(int argc, char** argv){
             if(strcmp(im.ime, "") == 0){
 
             while(1){
-                int offset = lseek(fd, fileOffset, SEEK_CUR);
+                int offset = lseek(oprimek, fileOffset, SEEK_CUR);
                 fileOffset = 1;
                 if(offset == nOfEntries){
-                    close(fd);
+                    close(oprimek);
                     break;
                 }
-                read(fd, &temp, sizeof(struct imenik));
+                read(oprimek, &temp, sizeof(struct imenik));
                 
                 if(strcmp(im.priimek, temp.priimek) == 0){
                     printf("%s \t %s \t %s \t %s \t %s \n", temp.id, temp.ime, temp.priimek, temp.telefon, temp.datum_rojstva);
@@ -154,13 +155,13 @@ int main(int argc, char** argv){
             if(strcmp(im.priimek, "") == 0){
 
             while(1){
-                int offset = lseek(fd, fileOffset, SEEK_CUR);
+                int offset = lseek(oprimek, fileOffset, SEEK_CUR);
                 fileOffset = 1;
                 if(offset == nOfEntries){
-                    close(fd);
+                    close(oprimek);
                     break;
                 }
-                read(fd, &temp, sizeof(struct imenik));
+                read(oprimek, &temp, sizeof(struct imenik));
                 
                 if(strcmp(im.ime, temp.ime) == 0){
                     printf("%s \t %s \t %s \t %s \t %s \n", temp.id, temp.ime, temp.priimek, temp.telefon, temp.datum_rojstva);
