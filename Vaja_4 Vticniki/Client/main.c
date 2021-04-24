@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <openssl/md5.h>
    
 int main(int argc, char** argv)
 {
@@ -18,7 +19,7 @@ int main(int argc, char** argv)
     int32_t fileSize; //velikost zbirke
     int32_t hash; //hash zbirke
     char* path; //niz z imenom ali potjo zbirke
-    char* bytes; //posamezni bajti prenesene zbirke
+    char* byte; //posamezni bajti prenesene zbirke
 
     char* addr = argv[1];
     int port = atoi(argv[2]);
@@ -54,9 +55,20 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    unsigned char c[MD5_DIGEST_LENGTH];
+
     FILE *fd;
     fd = fopen(path, "rb");
     int connfd = 0;
+
+    MD5_CTX mdContext;
+    int bytes;
+    unsigned char data[1024];
+
+    MD5_Init (&mdContext);
+    while ((bytes = fread (data, 1, 1024, fd)) != 0)
+    MD5_Update (&mdContext, data, bytes);
+    MD5_Final (c,&mdContext);
 
     if(fd == NULL)
     {
@@ -94,5 +106,8 @@ int main(int argc, char** argv)
     //printf("Hello message sent\n");
     //valread = read( sock , buffer, 1024);
     //printf("%s\n",buffer );
+    printf("%s", "Hash of file: ");
+    for(int i = 0; i < MD5_DIGEST_LENGTH; i++) printf("%02x", c[i]);
+    printf("\n");
     return 0;
 }

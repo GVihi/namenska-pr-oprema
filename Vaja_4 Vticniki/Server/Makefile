@@ -1,6 +1,6 @@
 all: build run
 build:
-	gcc main.c -m32 -g -o demo_server
+	gcc -Wall main.c -m32 -g -o demo_server -lcrypto -lssl
 run:
 	./demo_server
 clean:
