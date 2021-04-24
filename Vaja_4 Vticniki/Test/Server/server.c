@@ -13,13 +13,6 @@
 
 int main(int argc, char** argv)
 {
-    int32_t metadata; //meta podatki
-    int32_t nameLength; //dolžina imena zbirke
-    int32_t fileSize; //velikost zbirke
-    int32_t hash; //hash zbirke
-    char* path; //niz z imenom ali potjo zbirke
-    char* bytes; //posamezni bajti prenesene zbirke
-
     int port = atoi(argv[1]);
 
     int server_fd, new_socket, valread;
@@ -65,35 +58,9 @@ int main(int argc, char** argv)
         perror("accept");
         exit(EXIT_FAILURE);
     }
-
-    int bytesReceived = 0;
-    char recvBuff[256];
-    memset(recvBuff, '0', sizeof(recvBuff));
-
-    FILE *fp;
-    fp = fopen("sample_file.txt", "ab"); 
-    if(NULL == fp)
-    {
-        printf("Error opening file");
-        return 1;
-    }
-
-    while((bytesReceived = read(new_socket, recvBuff, 256)) > 0)
-    {
-        printf("Bytes received %d\n",bytesReceived);    
-        // recvBuff[n] = 0;
-        fwrite(recvBuff, 1,bytesReceived,fp);
-        // printf("%s \n", recvBuff);
-    }
-
-    if(bytesReceived < 0)
-    {
-        printf("\n Read Error \n");
-    }
-
-    //valread = read( new_socket , buffer, 1024);
-    //printf("%s\n",buffer );
-    //send(new_socket , hello , strlen(hello) , 0 );
-    //printf("Hello message sent\n");
+    valread = read( new_socket , buffer, 1024);
+    printf("%s\n",buffer );
+    send(new_socket , hello , strlen(hello) , 0 );
+    printf("Hello message sent\n");
     return 0;
 }

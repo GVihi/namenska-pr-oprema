@@ -13,16 +13,9 @@
    
 int main(int argc, char** argv)
 {
-    int32_t metadata; //meta podatki
-    int32_t nameLength; //dolžina imena zbirke
-    int32_t fileSize; //velikost zbirke
-    int32_t hash; //hash zbirke
-    char* path; //niz z imenom ali potjo zbirke
-    char* bytes; //posamezni bajti prenesene zbirke
-
     char* addr = argv[1];
     int port = atoi(argv[2]);
-    path = argv[3];
+    char* path = argv[3];
 
     if(strcmp(addr, "localhost") == 0){
         addr = "127.0.0.1";
@@ -53,46 +46,9 @@ int main(int argc, char** argv)
         printf("\nConnection Failed \n");
         return -1;
     }
-
-    FILE *fd;
-    fd = fopen(path, "rb");
-    int connfd = 0;
-
-    if(fd == NULL)
-    {
-        printf("Error opening file");
-        return 1;
-    }
-
-    fseek(fd, 0L, SEEK_END);
-    fileSize = ftell(fd);
-    rewind(fd);
-
-    printf("File size: %d\n", fileSize);
-
-    while(1){
-        unsigned char buff[256] = {0};
-        int nread = fread(buff,1,256,fd);
-
-        if(nread > 0)
-        {
-            printf("Sending \n");
-            write(sock, buff, nread);
-        }
-
-        if (nread < 256)
-        {
-            if (feof(fd))
-                printf("End of file\n");
-            if (ferror(fd))
-                printf("Error reading\n");
-            break;
-        }
-    }
-
-    //send(sock , hello , strlen(hello) , 0 );
-    //printf("Hello message sent\n");
-    //valread = read( sock , buffer, 1024);
-    //printf("%s\n",buffer );
+    send(sock , hello , strlen(hello) , 0 );
+    printf("Hello message sent\n");
+    valread = read( sock , buffer, 1024);
+    printf("%s\n",buffer );
     return 0;
 }
